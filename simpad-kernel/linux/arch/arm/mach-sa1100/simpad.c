@@ -92,16 +92,15 @@ fixup_simpad(struct machine_desc *desc, struct param_struct *params,
 	setup_initrd( __phys_to_virt(0xc0800000), 4*1024*1024 );
 }
 
-
 static struct map_desc simpad_io_desc[] __initdata = {
-  /* virtual	physical    length	domain	   r  w  c  b */
+  /* virtual    physical    length      domain     r  w  c  b */
   { 0xe8000000, 0x00000000, 0x01000000, DOMAIN_IO, 0, 1, 0, 0 },
   { 0xe9000000, 0x08000000, 0x01000000, DOMAIN_IO, 0, 1, 0, 0 },
-  { 0xf2800000, 0x4b800000, 0x00800000, DOMAIN_IO, 0, 1, 0, 0 }, /* MQ200 */  
-  { 0xf1000000, 0x18000000, 0x00100000, DOMAIN_IO, 0, 1, 0, 0 }, /* Paules CS3, write only */
+  { 0xf1000000, 0x18000000, 0x00100000, DOMAIN_IO, 0, 1, 0, 0 }, /* CS3, write only */
+  { 0xf2000000, 0x40000000, 0x00100000, DOMAIN_IO, 0, 1, 0, 0 }, /* CS4, tda8007 */
+  { 0xf2800000, 0x4b800000, 0x00800000, DOMAIN_IO, 0, 1, 0, 0 }, /* MQ200 */
   LAST_DESC
 };
-
 
 static void simpad_uart_pm(struct uart_port *port, u_int state, u_int oldstate)
 {

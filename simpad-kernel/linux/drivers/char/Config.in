@@ -300,4 +300,7 @@ if [ "$CONFIG_X86" = "y" ]; then
    tristate 'ACP Modem (Mwave) support' CONFIG_MWAVE
 fi
 
+if [ "$CONFIG_SA1100_SIMPAD" = "y" ]; then
+ tristate 'Smartcardreader(TDA8007) support' CONFIG_TDA8007
+fi
 endmenu

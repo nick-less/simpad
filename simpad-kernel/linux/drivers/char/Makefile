@@ -305,6 +305,8 @@ subdir-y	+= ../acorn/char
 obj-y		+= ../acorn/char/acorn-char.o
 endif
 
+obj-$(CONFIG_TDA8007)   += tda8007.o
+
 include $(TOPDIR)/Rules.make
 
 fastdep:
