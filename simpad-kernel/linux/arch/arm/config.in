@@ -493,6 +493,10 @@ tristate 'Kernel support for a.out binaries' CONFIG_BINFMT_AOUT
 tristate 'Kernel support for ELF binaries' CONFIG_BINFMT_ELF
 tristate 'Kernel support for MISC binaries' CONFIG_BINFMT_MISC
 dep_bool 'Power Management support (experimental)' CONFIG_PM $CONFIG_EXPERIMENTAL
+dep_tristate 'Advanced power management emulation support' CONFIG_APM $CONFIG_PM
+if [ "$CONFIG_APM" != "n" ]; then
+	bool ' SIMpad power management' CONFIG_SIMPAD_PM
+fi
 dep_tristate 'RISC OS personality' CONFIG_ARTHUR $CONFIG_CPU_32
 string 'Default kernel command string' CONFIG_CMDLINE ""
 

@@ -17,6 +17,8 @@
 
 #include <asm/dma.h>
 
+#include <asm/arch-sa1100/simpad_pm.h>
+
 #include "ucb1x00.h"
 
 /*
@@ -42,7 +44,8 @@
 #define MIN_SUPPLY            8500 /* Less then 8.5V means no powersupply */
 #else
 #define CALIBRATE_SUPPLY(a)   (((a) * 1500) / 45)
-#define MIN_SUPPLY            14000 /* Less then 14V means no powersupply */
+//#define MIN_SUPPLY            14000 /* Less then 14V means no powersupply */
+#define MIN_SUPPLY            12000 /* Less then 12V means no powersupply */
 #endif
 
 /*
@@ -50,7 +53,8 @@
  * if value is >= 50 then charging is on
  */
 #define CALIBRATE_CHARGING(a)    (((a)* 1000)/(152/4)))
-#define CHARGING_LED_LEVEL     50
+//#define CHARGING_LED_LEVEL     50
+#define CHARGING_LED_LEVEL     20
 
 
 static struct proc_dir_entry *dir;
@@ -106,6 +110,79 @@ static int ucb_read(char *page, char **start, off_t off, int count, int *eof, vo
 	return len;
 }
 
+/****************************************************************************/
+/*  Functions exported for use by the kernel and kernel modules             */
+/****************************************************************************/
+
+int simpad_get_battery(struct simpad_battery *bstat)
+{
+  int icharger, vcharger, vbatt;
+
+  if ( ucb ) {
+  	icharger = ucb1x00_simpad_read_icharger( ucb );
+  	vcharger = ucb1x00_simpad_read_vcharger( ucb );
+  	vbatt    = ucb1x00_simpad_read_vbatt( ucb );
+  } else {
+  	bstat->ac_status = SIMPAD_AC_STATUS_AC_UNKNOWN;
+	bstat->status = SIMPAD_BATT_STATUS_UNKNOWN;
+	bstat->percentage = 0x64; /* lets say 100% */
+	bstat->life = 360;	/* lets say a long time */
+	return 0;
+  }
+
+  /* AC status */
+  bstat->ac_status = SIMPAD_AC_STATUS_AC_OFFLINE;
+  if ( vcharger>MIN_SUPPLY ) {
+  	bstat->ac_status = SIMPAD_AC_STATUS_AC_ONLINE;
+  }
+
+  /* charging */
+  bstat->status = 0x0;
+  if ( icharger > CHARGING_LED_LEVEL ) {
+  	bstat->status = SIMPAD_BATT_STATUS_CHARGING;
+  }
+
+  /*
+    if( /vbatt< 8200 && vBatt > 7400)
+    battery state -->good
+    if( vBatt < 7400 && vBatt > 6600 )
+    battery state -->weak
+    if( vBatt < 6600 )
+    battery state -->bad (min.)
+    
+    if ( /vcharger > 12000) then powersupply   AC status 
+  */
+#define BATT_HIGH	8200
+#define BATT_LOW	7400
+#define BATT_CRITICAL	6600
+  if ( vbatt > BATT_HIGH )
+  	bstat->status |= SIMPAD_BATT_STATUS_HIGH;
+  else if ( vbatt < BATT_CRITICAL )
+  	bstat->status |= SIMPAD_BATT_STATUS_CRITICAL;
+  else if ( vbatt < BATT_LOW )
+  	bstat->status |= SIMPAD_BATT_STATUS_LOW;
+  
+  /* let's assume: 6V - 0, 9V - 100%, vbatt in mV */
+  bstat->percentage = (100*vbatt-600000)/3000;
+
+  /* let's assume: full load is 7h */
+  /* bstat->life = 420*bstat->percentage/100; */
+  bstat->life = 0;
+
+#if 0
+  printk("get_battery: ac: %02x / ch: %02x /  perc: %02x / life: %d\n",
+	 bstat->ac_status, bstat->status,
+	 bstat->percentage, bstat->life );
+#endif
+
+  return 0;
+}
+
+EXPORT_SYMBOL(simpad_get_battery);
+
+/****************************************************************************/
+/*  sample proc interface                                                   */
+/****************************************************************************/
 static int __init ucb1x00_simpad_init(void)
 {
 	struct proc_dir_entry *res;

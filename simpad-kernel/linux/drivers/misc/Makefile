@@ -24,6 +24,7 @@ obj-$(CONFIG_MCP_UCB1200)       += ucb1x00-assabet.o
 endif
 
 ifeq ($(CONFIG_SA1100_SIMPAD),y)
+export-objs			+= ucb1x00-simpad.o
 obj-$(CONFIG_MCP_UCB1200)       += ucb1x00-simpad.o
 endif
 
