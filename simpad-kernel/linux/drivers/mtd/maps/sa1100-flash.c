@@ -780,6 +780,7 @@ static struct mtd_partition simpad_partitions[] = {
                 offset: MTDPART_OFS_APPEND,
                 size: 0x00100000
         },{
+#ifdef CONFIG_ROOT_CRAMFS
                 name: "SIMpad root cramfs",
                 offset: MTDPART_OFS_APPEND,
                 size: 0x00D80000
@@ -787,6 +788,11 @@ static struct mtd_partition simpad_partitions[] = {
                 name: "SIMpad local jffs",
                 offset: MTDPART_OFS_APPEND,
                 size: MTDPART_SIZ_FULL
+#else
+                name: "SIMpad root jffs2",
+                offset:         MTDPART_OFS_APPEND,
+                size:           MTDPART_SIZ_FULL
+#endif /* CONFIG_CRAM_FS */
         }
 };
 #endif /* CONFIG_SA1100_SIMPAD */

@@ -11,6 +11,9 @@ if [ "$CONFIG_MTD" = "y" -o "$CONFIG_MTD" = "m" ]; then
    if [ "$CONFIG_MTD_DEBUG" = "y" ]; then
       int '  Debugging verbosity (0 = quiet, 3 = noisy)' CONFIG_MTD_DEBUG_VERBOSE 0
    fi
+   if [ "$CONFIG_CRAMFS" = "y" ]; then
+      bool '  Cramfs root partition' CONFIG_ROOT_CRAMFS
+   fi
    dep_tristate '  MTD partitioning support' CONFIG_MTD_PARTITIONS $CONFIG_MTD
    dep_tristate '  MTD concatenating support' CONFIG_MTD_CONCAT $CONFIG_MTD
    dep_tristate '  RedBoot partition table parsing' CONFIG_MTD_REDBOOT_PARTS $CONFIG_MTD_PARTITIONS
