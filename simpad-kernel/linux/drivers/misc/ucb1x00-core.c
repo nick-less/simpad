@@ -571,7 +571,7 @@ static int __init ucb1x00_init(void)
 		goto out;
 	}
 
-	my_ucb = kmalloc(sizeof(struct ucb1x00), GFP_KERNEL);
+	my_ucb = kmalloc(sizeof(struct ucb1x00), GFP_ATOMIC);
 	ret = -ENOMEM;
 	if (!my_ucb)
 		goto out;

@@ -283,7 +283,7 @@ static struct ucb1x00_audio *ucb1x00_audio_alloc(struct ucb1x00 *ucb)
 {
 	struct ucb1x00_audio *ucba;
 
-	ucba = kmalloc(sizeof(*ucba), GFP_KERNEL);
+	ucba = kmalloc(sizeof(*ucba), GFP_ATOMIC);
 	if (ucba) {
 		memset(ucba, 0, sizeof(*ucba));
 

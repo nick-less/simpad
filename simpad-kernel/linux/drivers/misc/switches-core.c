@@ -152,7 +152,7 @@ int switches_event(switches_mask_t *mask)
 
 		if ((action = (struct switches_action *)
 		     kmalloc(sizeof(struct switches_action),
-			     GFP_KERNEL)) == NULL) {
+			     GFP_ATOMIC)) == NULL) {
 			printk(KERN_ERR "%s: unable to allocate action "
 			       "descriptor\n", SWITCHES_NAME);
 			return -1;
