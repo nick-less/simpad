@@ -101,6 +101,8 @@ static int simpad_pcmcia_get_irq_info(struct pcmcia_irq_info *info){
 static int simpad_pcmcia_configure_socket(const struct pcmcia_configure
 					   *configure)
 {
+  static int irq_disabled = 0;
+
   if(configure->sock>1) 
       return -1;
 
@@ -144,11 +146,16 @@ static int simpad_pcmcia_configure_socket(const struct pcmcia_configure
   else
       set_cs3_bit(PCMCIA_BUFF_DIS);
 
-  if(configure->irq)
+  if(configure->irq) {
     enable_irq(IRQ_GPIO_CF_IRQ);
-  else
-    disable_irq(IRQ_GPIO_CF_IRQ);
-  
+    irq_disabled = 0;
+  }
+  else {
+    if (!irq_disabled) {
+      disable_irq(IRQ_GPIO_CF_IRQ);
+      irq_disabled = 1;
+    }
+  }
 
   //local_irq_restore(flags);
 
