@@ -15,10 +15,10 @@ obj-m :=
 obj-n :=
 obj-  :=
 
-export-objs :=	assabet.o consus.o badge4.o dma-sa1100.o dma-sa1111.o \
+export-objs :=	assabet.o badge4.o dma-sa1100.o dma-sa1111.o \
 		flexanet.o freebird.o frodo.o generic.o h3600.o \
 		huw_webpanel.o irq.o pcipool.o sa1111.o sa1111-pcibuf.o \
-		system3.o yopy.o usb_ctl.o usb_recv.o usb_send.o simputer.o ssp.o
+		system3.o yopy.o usb_ctl.o usb_recv.o usb_send.o simpad.o simputer.o ssp.o
 
 # These aren't present yet, and prevents a plain -ac kernel building.
 # hwtimer.o
@@ -30,7 +30,6 @@ export-objs :=	assabet.o consus.o badge4.o dma-sa1100.o dma-sa1111.o \
 ifeq ($(CONFIG_CPU_FREQ),y)
 obj-$(CONFIG_SA1100_ASSABET) += cpu-sa1110.o
 obj-$(CONFIG_SA1100_CEP) += cpu-sa1110.o
-obj-$(CONFIG_SA1100_CONSUS) += cpu-sa1110.o
 obj-$(CONFIG_SA1100_CERF) += cpu-sa1110.o
 obj-$(CONFIG_SA1100_HACKKIT) += cpu-sa1110.o
 obj-$(CONFIG_SA1100_PT_SYSTEM3) += cpu-sa1110.o
@@ -52,7 +51,6 @@ obj-$(CONFIG_SA1100_BADGE4) +=  badge4.o
 obj-$(CONFIG_SA1100_BRUTUS) += brutus.o
 obj-$(CONFIG_SA1100_CEP) += cep.o
 obj-$(CONFIG_SA1100_CERF) += cerf.o
-obj-$(CONFIG_SA1100_CONSUS) += consus.o
 obj-$(CONFIG_SA1100_EMPEG) += empeg.o
 obj-$(CONFIG_SA1100_FLEXANET) += flexanet.o
 obj-$(CONFIG_SA1100_FREEBIRD) += freebird.o
@@ -87,7 +85,6 @@ leds-$(CONFIG_SA1100_ADSBITSYPLUS) += leds-adsbitsyplus.o
 leds-$(CONFIG_SA1100_ASSABET) += leds-assabet.o
 leds-$(CONFIG_SA1100_BRUTUS) += leds-brutus.o
 leds-$(CONFIG_SA1100_CERF) += leds-cerf.o
-leds-$(CONFIG_SA1100_CONSUS) += leds-consus.o
 leds-$(CONFIG_SA1100_FLEXANET) += leds-flexanet.o
 leds-$(CONFIG_SA1100_FRODO) += leds-frodo.o
 leds-$(CONFIG_SA1100_GRAPHICSCLIENT) += leds-graphicsclient.o

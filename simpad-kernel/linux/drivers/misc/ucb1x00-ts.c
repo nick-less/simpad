@@ -342,7 +342,7 @@ static inline unsigned int ucb1x00_ts_read_xpos(struct ucb1x00_ts *ts)
 			UCB_TS_CR_TSMX_GND | UCB_TS_CR_TSPX_POW |
 			UCB_TS_CR_MODE_POS | UCB_TS_CR_BIAS_ENA);
 
-	udelay(55);
+	udelay(250); /*former 55*/
 
 	return ucb1x00_adc_read(ts->ucb, UCB_ADC_INP_TSPY, ts->adcsync);
 }
@@ -365,7 +365,7 @@ static inline unsigned int ucb1x00_ts_read_ypos(struct ucb1x00_ts *ts)
 			UCB_TS_CR_TSMY_GND | UCB_TS_CR_TSPY_POW |
 			UCB_TS_CR_MODE_POS | UCB_TS_CR_BIAS_ENA);
 
-	udelay(55);
+	udelay(250); /*former 55*/
 
 	return ucb1x00_adc_read(ts->ucb, UCB_ADC_INP_TSPX, ts->adcsync);
 }

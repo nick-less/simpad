@@ -488,8 +488,10 @@ static int __init ucb1x00_configure(struct ucb1x00 *ucb)
 		default_irq = IRQ_GPIO_UCB1300_IRQ;
 #endif
 #ifdef CONFIG_SA1100_SIMPAD
-	if (machine_is_simpad())
+	if (machine_is_simpad()) {
 		default_irq = IRQ_GPIO_UCB1300_IRQ;
+		irq_gpio_pin = GPIO_UCB1300_IRQ;
+	}
 #endif
 #ifdef CONFIG_SA1100_SIMPUTER
 	if (machine_is_simputer()) {

@@ -120,6 +120,7 @@ obj-$(CONFIG_FB_E1355)            += epson1355fb.o fbgen.o
 obj-$(CONFIG_FB_PVR2)             += pvr2fb.o
 obj-$(CONFIG_FB_VOODOO1)          += sstfb.o
 obj-$(CONFIG_FB_ANAKIN)           += anakinfb.o
+obj-$(CONFIG_FB_MQ200)            += mq200fb.o
 
 # Generic Low Level Drivers
 

@@ -28,6 +28,11 @@ long get_cs3_shadow()
 	return cs3_shadow;
 }
 
+void set_cs3(long value)
+{
+        *(CS3BUSTYPE *)(CS3_BASE) = cs3_shadow = value;
+}
+
 void set_cs3_bit(int value)
 {
 	cs3_shadow |= value;
@@ -40,17 +45,16 @@ void clear_cs3_bit(int value)
 	*(CS3BUSTYPE *)(CS3_BASE) = cs3_shadow;
 }
 
+EXPORT_SYMBOL(set_cs3_bit);
+EXPORT_SYMBOL(clear_cs3_bit);
+
 static void __init
 fixup_simpad(struct machine_desc *desc, struct param_struct *params,
 		   char **cmdline, struct meminfo *mi)
 {
-#ifdef CONFIG_SA1100_SIMPAD_DRAM_64MB /* DRAM */
 	SET_BANK( 0, 0xc0000000, 64*1024*1024 );
-#else
-	SET_BANK( 0, 0xc0000000, 32*1024*1024 );
-#endif
 	mi->nr_banks = 1;
-	ROOT_DEV = MKDEV(RAMDISK_MAJOR,0);
+
 	setup_ramdisk( 1, 0, 0, 8192 );
 	setup_initrd( __phys_to_virt(0xc0800000), 4*1024*1024 );
 }
@@ -58,7 +62,8 @@ fixup_simpad(struct machine_desc *desc, struct param_struct *params,
 
 static struct map_desc simpad_io_desc[] __initdata = {
   /* virtual	physical    length	domain	   r  w  c  b */
-  { 0xe8000000, 0x00000000, 0x02000000, DOMAIN_IO, 0, 1, 0, 0 }, 
+  { 0xe8000000, 0x00000000, 0x01000000, DOMAIN_IO, 0, 1, 0, 0 },
+  { 0xe9000000, 0x08000000, 0x01000000, DOMAIN_IO, 0, 1, 0, 0 },
   { 0xf2800000, 0x4b800000, 0x00800000, DOMAIN_IO, 0, 1, 0, 0 }, /* MQ200 */  
   { 0xf1000000, 0x18000000, 0x00100000, DOMAIN_IO, 0, 1, 0, 0 }, /* Paules CS3, write only */
   LAST_DESC
@@ -81,20 +86,27 @@ static struct sa1100_port_fns simpad_port_fns __initdata = {
 
 static void __init simpad_map_io(void)
 {
-	sa1100_map_io();
-	iotable_init(simpad_io_desc);
+        sa1100_map_io();
+        iotable_init(simpad_io_desc);
 
-	PSPR = 0xc0008000;
-	GPDR &= ~GPIO_GPIO0;
-	cs3_shadow = (EN1 | EN0 | LED2_ON | DISPLAY_ON | RS232_ON | 
-		      ENABLE_5V | RESET_SIMCARD);
-	*(CS3BUSTYPE *)(CS3_BASE) = cs3_shadow;
+        set_cs3_bit (EN1 | EN0 | LED2_ON | DISPLAY_ON | RS232_ON |
+                      ENABLE_5V | RESET_SIMCARD);
 
-	//It is only possible to register 3 UART in serial_sa1100.c
-	sa1100_register_uart(0, 3);
-	sa1100_register_uart(1, 1);
+        //It is only possible to register 3 UART in serial_sa1100.c
+        sa1100_register_uart(0, 3);
+        sa1100_register_uart(1, 1);
 
-	set_GPIO_IRQ_edge(GPIO_UCB1300_IRQ, GPIO_RISING_EDGE);
+        set_GPIO_IRQ_edge(GPIO_UCB1300_IRQ, GPIO_RISING_EDGE);
+        set_GPIO_IRQ_edge(GPIO_POWER_BUTTON, GPIO_FALLING_EDGE);
+
+        /*
+         * Set up registers for sleep mode.
+         */
+
+        PWER = PWER_GPIO0;
+        PGSR = 0x818;
+        PCFR = 0;
+        PSDR = 0;
 }
 
 #ifdef CONFIG_PROC_FS
@@ -140,7 +152,17 @@ static int proc_cs3_read(char *page, char **start, off_t off,
  
 	return len;
 }
- 
+
+static int proc_cs3_write(struct file * file, const char * buffer,
+                size_t count, loff_t *ppos)
+{
+        unsigned long newRegValue;
+        char *endp;
+
+        newRegValue = simple_strtoul(buffer,&endp,0);
+        set_cs3( newRegValue );
+        return (count+endp-buffer);
+}
  
 static struct proc_dir_entry *proc_cs3;
  
@@ -148,7 +170,10 @@ static int __init cs3_init(void)
 {
 	proc_cs3 = create_proc_entry("cs3", 0, 0);
 	if (proc_cs3)
+	{
 		proc_cs3->read_proc = proc_cs3_read;
+		proc_cs3->write_proc = (void*)proc_cs3_write;
+	}
 	return 0;
 }
  

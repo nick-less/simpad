@@ -9,19 +9,17 @@
 
 #include <asm/hardware.h>
 #include <asm/irq.h>
+#include <asm/arch/simpad.h>
+
 #include "sa1100_generic.h"
- 
+
 extern long get_cs3_shadow(void);
-extern void set_cs3_bit(int value); 
+extern void set_cs3_bit(int value);
 extern void clear_cs3_bit(int value);
 
 
 static int simpad_pcmcia_init(struct pcmcia_init *init){
   int irq, res;
-
-  set_cs3_bit(PCMCIA_RESET);
-  clear_cs3_bit(PCMCIA_BUFF_DIS);
-  clear_cs3_bit(PCMCIA_RESET);
 
   clear_cs3_bit(VCC_3V_EN|VCC_5V_EN|EN0|EN1);
 
@@ -63,6 +61,9 @@ static int simpad_pcmcia_socket_state(struct pcmcia_state_array
 
   if(state_array->size<2) return -1;
 
+  memset(state_array->state, 0, 
+	 (state_array->size)*sizeof(struct pcmcia_state));
+
   levels=GPLR;
 
   state_array->state[1].detect=((levels & GPIO_CF_CD)==0)?1:0;
@@ -100,13 +101,13 @@ static int simpad_pcmcia_get_irq_info(struct pcmcia_irq_info *info){
 static int simpad_pcmcia_configure_socket(const struct pcmcia_configure
 					   *configure)
 {
-  unsigned long value, flags;
+  if(configure->sock>1) 
+      return -1;
 
-  if(configure->sock>1) return -1;
+  if(configure->sock==0) 
+      return 0;
 
-  if(configure->sock==0) return 0;
-
-  save_flags_cli(flags);
+  //local_irq_save(flags);
 
   /* Murphy: see table of MIC2562a-1 */
 
@@ -116,8 +117,8 @@ static int simpad_pcmcia_configure_socket(const struct pcmcia_configure
     break;
 
   case 33:  
-    clear_cs3_bit(VCC_3V_EN|EN0);
-    set_cs3_bit(VCC_5V_EN|EN1);
+    clear_cs3_bit(VCC_3V_EN|EN1);
+    set_cs3_bit(VCC_5V_EN|EN0);
     break;
 
   case 50:
@@ -129,26 +130,45 @@ static int simpad_pcmcia_configure_socket(const struct pcmcia_configure
     printk(KERN_ERR "%s(): unrecognized Vcc %u\n", __FUNCTION__,
 	   configure->vcc);
     clear_cs3_bit(VCC_3V_EN|VCC_5V_EN|EN0|EN1);
-    restore_flags(flags);
+    //restore_flags(flags);
     return -1;
   }
 
-  /* Silently ignore Vpp, output enable, speaker enable. */
+  if(configure->reset)
+      set_cs3_bit(PCMCIA_RESET);
+  else
+      clear_cs3_bit(PCMCIA_RESET);
+  
+  if(configure->output)
+      clear_cs3_bit(PCMCIA_BUFF_DIS);
+  else
+      set_cs3_bit(PCMCIA_BUFF_DIS);
 
-  restore_flags(flags);
+  if(configure->irq)
+    enable_irq(IRQ_GPIO_CF_IRQ);
+  else
+    disable_irq(IRQ_GPIO_CF_IRQ);
+  
+
+  //local_irq_restore(flags);
 
   return 0;
 }
 
 static int simpad_pcmcia_socket_init(int sock)
 {
-  set_GPIO_IRQ_edge(GPIO_CF_CD, GPIO_BOTH_EDGES);
+  if(sock == 1)
+      set_GPIO_IRQ_edge(GPIO_CF_CD, GPIO_BOTH_EDGES);
   return 0;
 }
 
 static int simpad_pcmcia_socket_suspend(int sock)
 {
-  set_GPIO_IRQ_edge(GPIO_CF_CD, GPIO_NO_EDGES);
+  if(sock == 1)
+  {
+    set_GPIO_IRQ_edge(GPIO_CF_CD, GPIO_NO_EDGES);
+    set_cs3_bit(PCMCIA_RESET);  
+  }
   return 0;
 }
 

@@ -72,6 +72,8 @@
 		.section ".text.init",#alloc,#execinstr
 		.type	stext, #function
 ENTRY(stext)
+		mov     r1, #87
+                mov     r0, #0
 		mov	r12, r0
 /*
  * NOTE!  Any code which is placed here should be done for one of

@@ -15,3 +15,15 @@ dep_tristate '  Audio / Telephony interface support' CONFIG_MCP_UCB1200_AUDIO $C
 dep_tristate '  Touchscreen interface support' CONFIG_MCP_UCB1200_TS $CONFIG_MCP_UCB1200
 
 endmenu
+mainmenu_option next_comment
+comment 'Console Switches'
+
+tristate 'Console Switch Support' CONFIG_SWITCHES
+if [ "$CONFIG_SWITCHES" != "n" ]; then
+   dep_bool '  SA-1100 switches' CONFIG_SWITCHES_SA1100 $CONFIG_ARCH_SA1100
+   if [ "$CONFIG_MCP_UCB1200" != "n" ]; then
+      bool '  UCB1x00 switches' CONFIG_SWITCHES_UCB1X00
+   fi
+fi
+
+endmenu

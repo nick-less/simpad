@@ -767,40 +767,27 @@ static struct mtd_partition sherman_partitions[] = {
 #endif
 
 #ifdef CONFIG_SA1100_SIMPAD
-#define SIMPAD_FLASH_SIZE		0x02000000
+#define SIMPAD_FLASH_SIZE               0x02000000
+
 static struct mtd_partition simpad_partitions[] = {
-	{
-		name:		"SIMpad boot firmware",
-		size:		0x00080000,
-		offset:		0,
-		mask_flags:	MTD_WRITEABLE,  /* force read-only */
-	}, {
-		name:		"SIMpad kernel",
-		size:		0x00100000,
-		offset:		0x00080000,
-	}, {
-#ifdef CONFIG_JFFS2_FS
-		name:		"SIMpad root jffs2",
-		size:		MTDPART_SIZ_FULL,
-		offset:		0x00180000,
-#else
-		name:		"SIMpad initrd",
-		size:		0x00300000,
-		offset:		0x00180000,
-	}, {
-		name:		"SIMpad root cramfs",
-		size:		0x00300000,
-		offset:		0x00480000,
-	}, {
-		name:		"SIMpad usr cramfs",
-		size:		0x005c0000,
-		offset:		0x00780000,
-	}, {
-		name:		"SIMpad usr local",
-		size:		MTDPART_SIZ_FULL,
-		offset:		0x00d40000,
-#endif
-	}
+        {
+                name: "SIMpad boot firmware",
+                offset: 0,
+                size: 0x00080000,
+                mask_flags: MTD_WRITEABLE  /* force read-only */
+        },{
+                name: "SIMpad kernel",
+                offset: MTDPART_OFS_APPEND,
+                size: 0x00100000
+        },{
+                name: "SIMpad root cramfs",
+                offset: MTDPART_OFS_APPEND,
+                size: 0x00D80000
+        },{
+                name: "SIMpad local jffs",
+                offset: MTDPART_OFS_APPEND,
+                size: MTDPART_SIZ_FULL
+        }
 };
 #endif /* CONFIG_SA1100_SIMPAD */
 

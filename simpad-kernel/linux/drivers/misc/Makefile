@@ -19,6 +19,23 @@ obj-$(CONFIG_MCP_UCB1200)	+= ucb1x00-core.o
 obj-$(CONFIG_MCP_UCB1200_AUDIO)	+= ucb1x00-audio.o
 obj-$(CONFIG_MCP_UCB1200_TS)	+= ucb1x00-ts.o
 
+ifeq ($(CONFIG_SA1100_ASSABET),y)
+obj-$(CONFIG_MCP_UCB1200)       += ucb1x00-assabet.o
+endif
+
+ifeq ($(CONFIG_SA1100_SIMPAD),y)
+obj-$(CONFIG_MCP_UCB1200)       += ucb1x00-simpad.o
+endif
+
+obj-$(CONFIG_SWITCHES)          += switches.o
+
+switches-objs-y                                 += switches-core.o
+switches-objs-$(CONFIG_SWITCHES_SA1100)         += switches-sa1100.o
+switches-objs-$(CONFIG_SWITCHES_UCB1X00)        += switches-ucb1x00.o
+
 include $(TOPDIR)/Rules.make
+
+switches.o: $(switches-objs-y)
+	$(LD) $(LD_RFLAG) -r -o $@ $(switches-objs-y)
 
 fastdep:
