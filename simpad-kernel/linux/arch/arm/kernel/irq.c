@@ -75,9 +75,9 @@ void disable_irq(unsigned int irq)
 
 	spin_lock_irqsave(&irq_controller_lock, flags);
 	if (!desc->disable_depth++) {
-#ifndef CONFIG_CPU_SA1100
+// #ifndef CONFIG_CPU_SA1100
 		desc->mask(irq);
-#endif
+// #endif
 	}
 	spin_unlock_irqrestore(&irq_controller_lock, flags);
 }
