@@ -61,6 +61,7 @@ enum {	SLEEP_SAVE_START = 0,
 	SLEEP_SAVE_PPDR, SLEEP_SAVE_PPSR, SLEEP_SAVE_PPAR, SLEEP_SAVE_PSDR,
 
 	SLEEP_SAVE_ICMR,
+	SLEEP_SAVE_MECR,
 	SLEEP_SAVE_Ser1SDCR0,
 
 	SLEEP_SAVE_SIZE
@@ -99,6 +100,8 @@ int pm_do_suspend(void)
 	SAVE(Ser1SDCR0);
 
 	SAVE(ICMR);
+
+	SAVE(MECR);
 
 	/* ... maybe a global variable initialized by arch code to set this? */
 	GRER = PWER;
@@ -149,6 +152,8 @@ int pm_do_suspend(void)
 	ICLR = 0;
 	ICCR = 1;
 	RESTORE(ICMR);
+
+	RESTORE(MECR);
 
 	/* restore current time */
 	xtime.tv_sec = RCNR;
