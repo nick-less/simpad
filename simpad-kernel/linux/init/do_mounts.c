@@ -720,7 +720,13 @@ static void __init mount_root(void)
 			return;
 		}
 		printk(KERN_ERR "VFS: Unable to mount root fs via NFS, trying floppy.\n");
+#ifdef CONFIG_SA1100_SIMPAD
+		/* no floppy -> cramfs */
+		printk(KERN_ERR "VFS: Unable to mount root fs via NFS, trying cramfs.\n");
+		ROOT_DEV = MKDEV(31, 2);
+#else
 		ROOT_DEV = MKDEV(FLOPPY_MAJOR, 0);
+#endif
 	}
 #endif
 	devfs_make_root(root_device_name);

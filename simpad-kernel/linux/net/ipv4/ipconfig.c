@@ -83,8 +83,13 @@
 #define CONF_POST_OPEN		(1*HZ)	/* After opening: 1 second */
 
 /* Define the timeout for waiting for a DHCP/BOOTP/RARP reply */
+#ifdef CONFIG_SA1100_SIMPAD
+#define CONF_OPEN_RETRIES     1       /* (Re)open devices once */
+#define CONF_SEND_RETRIES     3       /* Send three requests per open */
+#else
 #define CONF_OPEN_RETRIES 	2	/* (Re)open devices twice */
 #define CONF_SEND_RETRIES 	6	/* Send six requests per open */
+#endif
 #define CONF_INTER_TIMEOUT	(HZ/2)	/* Inter-device timeout: 1/2 second */
 #define CONF_BASE_TIMEOUT	(HZ*2)	/* Initial timeout: 2 seconds */
 #define CONF_TIMEOUT_RANDOM	(HZ)	/* Maximum amount of randomization */
@@ -1207,7 +1212,7 @@ static int __init ip_auto_config(void)
 			 *
 			 * 				-- Chip
 			 */
-#ifdef CONFIG_ROOT_NFS
+#if defined(CONFIG_ROOT_NFS) && ! defined(CONFIG_SA1100_SIMPAD)
 			if (ROOT_DEV == MKDEV(UNNAMED_MAJOR, 255)) {
 				printk(KERN_ERR 
 					"IP-Config: Retrying forever (NFS root)...\n");
