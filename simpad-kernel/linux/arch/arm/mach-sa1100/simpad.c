@@ -129,6 +129,11 @@ static void __init simpad_map_io(void)
         sa1100_register_uart(0, 3);
         sa1100_register_uart(1, 1);
 
+	GAFR |= (GPIO_UART_TXD | GPIO_UART_RXD);
+	GPDR |= GPIO_UART_TXD;
+	GPDR &= ~GPIO_UART_RXD;
+	PPAR |= PPAR_UPR;
+
         set_GPIO_IRQ_edge(GPIO_UCB1300_IRQ, GPIO_RISING_EDGE);
         set_GPIO_IRQ_edge(GPIO_POWER_BUTTON, GPIO_FALLING_EDGE);
 
