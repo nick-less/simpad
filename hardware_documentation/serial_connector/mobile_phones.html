@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<!-- saved from url=(0034)http://www.nobbi.com/steck_s25.htm -->
+  <title>Steckerbelegung SIEMENS (FRAME)</title>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=windows-1252">
+  <link
+ href="Steckerbelegung%20SIEMENS%20%28FRAME%29-Dateien/nobbist.css"
+ type="text/css" rel="stylesheet">
+  <meta content="MSHTML 6.00.2716.2200" name="GENERATOR">
+</head>
+<body style="background-color: rgb(255, 255, 255);">
+<span
+ style="color: rgb(255, 102, 102); font-family: helvetica,arial,sans-serif;"><span
+ style="font-weight: bold;"><span style="color: rgb(255, 102, 102);">Hi
+everyone!<br>
+<br>
+This page is originally from www.nobbi.com and is not about the Siemens
+SIMpad.<br>
+I checked it in as a basis for exploring the SIMpad's serial connector.
+The manual only mentions headphones and serial devices to be connected
+to this port.<br>
+Well, I think we'll se if that's all :-)<br>
+<br>
+Along to this web page I created some SIMpad pics on my own which were
+checked in additionally:<br>
+</span></span></span>
+<table cellpadding="0" cellspacing="0" border="0"
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><span
+ style="color: rgb(255, 102, 102);"><span style="font-weight: bold;"><span
+ style="color: rgb(255, 102, 102);"><img
+ src="file:///home/knoppix/hardware_documentation/serial_connector/images/multi_jack.jpg"
+ title="" alt="" style="width: 323px; height: 186px;"><br>
+      </span></span></span><span style="color: rgb(255, 102, 102);"><span
+ style="font-weight: bold;"><span style="color: rgb(255, 102, 102);"><img
+ src="file:///home/knoppix/hardware_documentation/serial_connector/images/multi_jack_num.jpg"
+ title="" alt="" style="width: 323px; height: 186px;"></span></span></span><br>
+      </td>
+      <td style="vertical-align: top;"><span
+ style="color: rgb(255, 102, 102);"><span style="font-weight: bold;"><span
+ style="color: rgb(255, 102, 102);"><img
+ src="file:///home/knoppix/hardware_documentation/serial_connector/images/multi_plug.jpg"
+ title="" alt="" style="width: 258px; height: 474px;"></span></span></span><span
+ style="color: rgb(255, 102, 102);"><span style="font-weight: bold;"><span
+ style="color: rgb(255, 102, 102);"><img
+ src="file:///home/knoppix/hardware_documentation/serial_connector/images/multi_plug_num.jpg"
+ title="" alt="" style="width: 258px; height: 474px;"></span></span></span></td>
+    </tr>
+  </tbody>
+</table>
+<span
+ style="color: rgb(255, 102, 102); font-family: helvetica,arial,sans-serif;"><span
+ style="font-weight: bold;"><span style="color: rgb(255, 102, 102);"><br>
+</span></span><span style="font-weight: bold;"><span
+ style="color: rgb(255, 102, 102);"></span></span><span
+ style="font-weight: bold;"></span></span>
+<hr
+ style="width: 100%; height: 2px; font-family: helvetica,arial,sans-serif;">
+<h2 align="center" style="font-family: helvetica,arial,sans-serif;">Für
+Bastler und die Liebhaber des Heißklebers: <br>
+Die Steckerbelegung für Siemens-Telefone ab S25, incl. dem GigaSet
+micro4000!</h2>
+<p style="font-family: helvetica,arial,sans-serif;"><br>
+</p>
+<table width="90%" align="center"
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <center><img style="height: 76px; width: 314px;"
+ alt="S25-Stecker Lötseite" src="images/multi_scheme_num.jpg"
+ align="middle" title=""> </center>
+      </td>
+    </tr>
+    <tr>
+      <td>(Bild gesehen auf die Lötseite des Steckers, so, wie er im
+Betrieb im       Handy steckt, die Tastatur ist also oben)<br>
+Die Belegung trifft zu auf       die folgenden Telefone: C25, C28, S25,
+C35, M35, S35i, A35, A36, A40,       SL42/45, ME45, C45, S45, S45i,
+M50, MT50, A50, Gigaset4xxx</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>
+      <table cellspacing="0" width="90%" align="center" border="1">
+        <tbody>
+          <tr>
+            <td><b>Pin</b></td>
+            <td><b>Name</b></td>
+            <td><b>Funktion</b></td>
+            <td><b>sonstiges</b></td>
+            <td><b>in / out</b></td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>GND</td>
+            <td>Masse</td>
+            <td>&nbsp;</td>
+            <td>&nbsp; </td>
+          </tr>
+          <tr>
+            <td valign="top">2</td>
+            <td valign="top">SB</td>
+            <td valign="top">Erkennung/Steuerung Ladegerät</td>
+            <td>LOW = 150mA-Ladegerät<br>
+HIGH = 1A-Ladegerät<br>
+NC = 400mA-Lader             bei 35/45</td>
+            <td>in / out</td>
+          </tr>
+          <tr>
+            <td valign="top">&nbsp;</td>
+            <td valign="top">AUD01</td>
+            <td valign="top">SL45: Audiokanal 1 </td>
+            <td>&nbsp;</td>
+            <td>out</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>CHARGE</td>
+            <td>Ladespannung/strom</td>
+            <td>U = 6,1V - 8,0V</td>
+            <td>in</td>
+          </tr>
+          <tr>
+            <td valign="top">4</td>
+            <td valign="top">BATT</td>
+            <td valign="top">Spannungsversorgung für Zubehör</td>
+            <td>U = 3,0V - 3,9V<br>
+Umin = 2,6V<br>
+Imax = 100mA</td>
+            <td>out</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>DATA OUT</td>
+            <td>Daten abgehend</td>
+            <td>PullUp im Telefon</td>
+            <td>out</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>DATA IN</td>
+            <td>Daten ankommend</td>
+            <td>PullDown im Endgerät</td>
+            <td>in</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Z_CLK</td>
+            <td>Taktleitung für Zubehörbus</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>Z_DATA</td>
+            <td>Datenleitung für Zubehörbus</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>DATA CTS</td>
+            <td>CTS</td>
+            <td>nur im Datenbetrieb</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>MICG</td>
+            <td>GND für Mikrofon</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>MIC</td>
+            <td>Mikrofon</td>
+            <td>U = 1,5Vpp</td>
+            <td>in</td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td>AUD</td>
+            <td>Lautsprecher</td>
+            <td>U = 1,5Vpp</td>
+            <td>out</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>AUD02</td>
+            <td>SL45: Audiokanal 2</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>AUDG</td>
+            <td>4xxx: GND für Lautsprecher</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td>AUDG</td>
+            <td>GND für Lautsprecher</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>AUD</td>
+            <td>4xxx: Lautsprecher/DC-Offset</td>
+            <td>Signal ist nicht ausgekoppelt!</td>
+            <td>&nbsp;</td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>
+      <ul>
+        <li><b>S45</b> : Im Gegensatz zum S25 und den X35 darf beim S45
+im Headsetbetrieb <i>Pin9 nicht mit Pin12</i> verbunden sein. Das
+Headset         scheint sonst nicht oder nur eingeschränkt zu
+funktionieren. </li>
+        <li><b>C25</b> : Das C25 ist <i>nicht</i> datenfähig und kann
+AT-Kommandos nur mit spezieller Software beantworten </li>
+        <li><b>PC-Anschluss</b> : Zum Anschluss der Datenleitungen an
+einen PC         muss <i>in jedem Fall</i> ein Pegelwandler verwendet
+werden. Etwa <a href="http://www.nobbi.com/datacables10.htm">der hier</a>.
+Um auch den         Worst-Case-Fall sauber abzudecken, solle der
+LOW-Pegel auf den         Logikleitungen nicht über 200mV liegen, HIGH
+sollte besser als 2V sein </li>
+        <li><b>Ladegerät</b> : Das Telefon erkennt am Pegel an Pin 2 das
+angeschlossene Ladegerät und steuert dieses gegebenenfalls über ein
+PCM-Signal am gleichen Pin. Die Eingangsimpedanz des Steuerpins muß im 
+Ladegerät mindestens 470kOhm betragen. Offenbar kann bei den 35/45ern
+Pin2 offen bleiben, an Pin3 sollten dann mind. 300mA geliefert werden
+können. Allerdings wurden auch schon Ladegeräte gesichtet, bei denen Pin
+2 direkt mit Pin 1 verbunden ist. </li>
+        <li><b>Zubehörerkennung</b> : Zubehör wird über verschiedene
+Zustände an         den Pins 7 und 8 erkannt, der Standardzustand dieser
+Pins ist HIGH/HIGH.         Das Headset identifiziert sich
+beispielsweise durch Pin7 HIGH, Pin8 LOW,         also einer Brücke von
+Pin8 nach GND. Beim C25 genügt eine Brücke von         Pin8 nach Pin12,
+was beim S35 nicht funktioniert, hier wird die Brücke von Pin8
+nach Pin1 benötigt. Dauerlicht bei eingestecktem Headset lässt sich auf
+diese Art übrigens nicht realisieren. Der Widerstand solle zwischen
+470R und 1K liegen. </li>
+        <li><b>PTT-Taste</b> : Die PTT-Taste (<b>P</b>ush-<b>T</b>o-<b>T</b>alk,
+funktioniert nur ab den 35ern) verbindet im gedrückten Zustand Pin7 mit
+Pin9 </li>
+        <li><b>Gigaset4xxx</b> : Ein Headset benötigt eine Brücke von
+Pin8 nach         Pin9. Die gemeinsame Masse von Mikro und Lautsprecher
+ist Pin9, das         Audiosignal muss über einen ElKo ausgekoppelt
+werden, 4u7 bis 22u sind         OK, also Pin12 an ElKo +Pol,
+Headset-Lautsprecher an ElKo -Pol. Die         PTT-Taste funktioniert
+wie oben beschrieben. </li>
+        <li><b>Dauerstrom an Pin4</b> : falls an Pin4 nur gepulste
+Spannung ankommt: das Telefon muss in den Headset-Mode versetzt werden.
+Siehe         Zubehörerkennung. </li>
+      </ul>
+      <br>
+Eine Bauanleitung für ein Audiokabel fürs       SL42/45 gibts <a
+ href="http://www.m2k1.net/mobile/audiokabel/" target="_new">hier</a>. </td>
+    </tr>
+  </tbody>
+</table>
+<p class="smaller" style="font-family: helvetica,arial,sans-serif;"><a
+ href="http://www.nobbi.com/copyright.htm">©</a> by <a
+ href="mailto:web.nobbi.01@nobbi.com">Nobbi</a><br>
+</p>
+</body>
+</html>
