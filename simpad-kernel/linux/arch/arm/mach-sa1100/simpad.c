@@ -122,7 +122,7 @@ static void __init simpad_map_io(void)
         iotable_init(simpad_io_desc);
 
         set_cs3_bit (EN1 | EN0 | LED2_ON | DISPLAY_ON | RS232_ON |
-                      ENABLE_5V | RESET_SIMCARD);
+                      ENABLE_5V | nRESET_SIMCARD);
 
         //It is only possible to register 3 UART in serial_sa1100.c
         sa1100_register_uart(0, 3);

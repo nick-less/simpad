@@ -71,7 +71,7 @@
 #define LED2_ON         0x1000 
 #define IRDA_MODE       0x2000 // Fast/Slow IrDA mode
 #define ENABLE_5V       0x4000 // Enable 5V circuit
-#define RESET_SIMCARD   0x8000
+#define nRESET_SIMCARD  0x8000
 
 #define RS232_ENABLE    0x0440
 #define PCMCIAMASK      0x402f   
