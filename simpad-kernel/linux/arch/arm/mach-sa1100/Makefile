@@ -103,15 +103,14 @@ obj-$(CONFIG_SA1100_USB) += sa1100usb_core.o
 obj-$(CONFIG_SA1100_USB_NETLINK) += usb-eth.o
 obj-$(CONFIG_SA1100_USB_CHAR) += usb-char.o
 
-# SIMpad specific
-export-objs +=  simpad_pm.o
-                                                                                
-obj-$(CONFIG_SIMPAD_PM) += simpad_pm.o
-
 # Miscelaneous functions
 obj-$(CONFIG_PM) += pm.o sleep.o
 obj-$(CONFIG_APM) += apm.o
 
+# SIMpad specific
+export-objs +=  simpad_pm.o
+obj-$(CONFIG_SIMPAD_PM) += simpad_pm.o
+                                                                                
 obj-$(CONFIG_SA1100_SSP)		+= ssp.o
 
 include $(TOPDIR)/Rules.make

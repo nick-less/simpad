@@ -32,6 +32,8 @@
 
 #include "ucb1x00.h"
 
+struct ucb1x00 *my_ucb;
+
 /**
  *	ucb1x00_io_set_dir - set IO direction
  *	@ucb: UCB1x00 structure describing chip
@@ -205,6 +207,9 @@ static int ucb1x00_pm (struct pm_dev *dev, pm_request_t rqst, void *data)
 		ucb1x00_reg_write(ucb, UCB_IE_CLEAR, isr);
 		ucb1x00_reg_write(ucb, UCB_IE_CLEAR, 0);
 		ucb1x00_disable(ucb);
+#ifdef CONFIG_SA1100_SIMPAD
+		simpad_switches_ucb1x00_reinit();
+#endif
 	}
 
 	return 0;
@@ -536,8 +541,6 @@ static int __init ucb1x00_configure(struct ucb1x00 *ucb)
 
 	return ucb->irq == NO_IRQ ? -ENODEV : 0;
 }
-
-struct ucb1x00 *my_ucb;
 
 /**
  *	ucb1x00_get - get the UCB1x00 structure describing a chip

@@ -187,6 +187,24 @@ static int simpad_switches_ucb1x00_init(void)
 
 }
 
+int simpad_switches_ucb1x00_reinit(void)
+{
+	int i;
+	ucb1x00_enable(ucb1x00);
+
+	ucb1x00_io_set_dir(ucb1x00,
+			UCB_IO_0 | UCB_IO_1 | UCB_IO_2 |
+			UCB_IO_3 | UCB_IO_4 | UCB_IO_5,
+			UCB_IO_8 | UCB_IO_9);
+
+	ucb1x00_disable(ucb1x00);
+
+	for (i = 0; i < 6; ++i)
+		ucb1x00_enable_irq(ucb1x00, i, UCB_RISING | UCB_FALLING);
+
+	return 0;
+}
+
 static void simpad_switches_ucb1x00_shutdown(void)
 {
 	int i;

@@ -54,7 +54,27 @@
  */
 #define CALIBRATE_CHARGING(a)    (((a)* 1000)/(152/4)))
 //#define CHARGING_LED_LEVEL     50
-#define CHARGING_LED_LEVEL     20
+
+#ifdef CONFIG_SA1100_SIMPAD_SINUSPAD
+
+#define CHARGING_LED_LEVEL     12
+#define CHARGING_MAX_LEVEL     120
+#define BATT_FULL	8100
+#define BATT_LOW	7300
+#define BATT_CRITICAL	6700
+#define BATT_EMPTY	6400
+
+
+#else // CONFIG_SA1100_SIMPAD_SINUSPAD
+
+#define CHARGING_LED_LEVEL     24
+#define CHARGING_MAX_LEVEL     265
+#define BATT_FULL	8300
+#define BATT_LOW	7400
+#define BATT_CRITICAL	6800
+#define BATT_EMPTY	6500
+
+#endif // CONFIG_SA1100_SIMPAD_SINUSPAD
 
 
 static struct proc_dir_entry *dir;
@@ -142,28 +162,23 @@ int simpad_get_battery(struct simpad_battery *bstat)
   	bstat->status = SIMPAD_BATT_STATUS_CHARGING;
   }
 
-  /*
-    if( /vbatt< 8200 && vBatt > 7400)
-    battery state -->good
-    if( vBatt < 7400 && vBatt > 6600 )
-    battery state -->weak
-    if( vBatt < 6600 )
-    battery state -->bad (min.)
-    
-    if ( /vcharger > 12000) then powersupply   AC status 
-  */
-#define BATT_HIGH	8200
-#define BATT_LOW	7400
-#define BATT_CRITICAL	6600
-  if ( vbatt > BATT_HIGH )
-  	bstat->status |= SIMPAD_BATT_STATUS_HIGH;
+  if ( vbatt > BATT_LOW )
+      bstat->status |= SIMPAD_BATT_STATUS_HIGH;
   else if ( vbatt < BATT_CRITICAL )
-  	bstat->status |= SIMPAD_BATT_STATUS_CRITICAL;
-  else if ( vbatt < BATT_LOW )
-  	bstat->status |= SIMPAD_BATT_STATUS_LOW;
-  
-  /* let's assume: 6V - 0, 9V - 100%, vbatt in mV */
-  bstat->percentage = (100*vbatt-600000)/3000;
+      bstat->status |= SIMPAD_BATT_STATUS_CRITICAL;
+  else
+      bstat->status |= SIMPAD_BATT_STATUS_LOW;
+
+  if (bstat->status & SIMPAD_BATT_STATUS_CHARGING) {
+      if (icharger > CHARGING_MAX_LEVEL)  icharger = CHARGING_MAX_LEVEL;
+      if (icharger < CHARGING_LED_LEVEL)  icharger = CHARGING_LED_LEVEL;
+      bstat->percentage = 100 - 100 * (icharger - CHARGING_LED_LEVEL) /
+	(CHARGING_MAX_LEVEL - CHARGING_LED_LEVEL);
+  } else {
+      if (vbatt > BATT_FULL)  vbatt = BATT_FULL;
+      if (vbatt < BATT_EMPTY) vbatt = BATT_EMPTY;
+      bstat->percentage = 100 * (vbatt - BATT_EMPTY) / (BATT_FULL - BATT_EMPTY);
+  }
 
   /* let's assume: full load is 7h */
   /* bstat->life = 420*bstat->percentage/100; */

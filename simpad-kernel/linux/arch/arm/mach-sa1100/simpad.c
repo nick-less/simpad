@@ -10,6 +10,7 @@
 #include <linux/tty.h>
 #include <linux/proc_fs.h>
 #include <linux/string.h> 
+#include <linux/pm.h> 
 
 #include <asm/hardware.h>
 #include <asm/setup.h>
@@ -48,11 +49,43 @@ void clear_cs3_bit(int value)
 EXPORT_SYMBOL(set_cs3_bit);
 EXPORT_SYMBOL(clear_cs3_bit);
 
+static void simpad_power_off(void)
+{
+    cli();
+    set_cs3(0x800);        /* only SD_MEDIAQ */
+
+    /* disable internal oscillator, float CS lines */
+    PCFR = (PCFR_OPDE | PCFR_FP | PCFR_FS);
+    /* enable wake-up on GPIO0 (Assabet...) */
+    PWER = GFER = GRER = 1;
+    /*
+     * set scratchpad to zero, just in case it is used as a
+     * restart address by the bootloader.
+     */
+    PSPR = 0;
+    PGSR = 0;
+    /* enter sleep mode */
+    PMCR = PMCR_SF;
+    while(1);
+}
+           
+static int __init simpad_init(void)
+{
+    pm_power_off = simpad_power_off;
+    return 0;
+}
+
+__initcall(simpad_init);
+
 static void __init
 fixup_simpad(struct machine_desc *desc, struct param_struct *params,
 		   char **cmdline, struct meminfo *mi)
 {
+#ifdef CONFIG_SA1100_SIMPAD_SINUSPAD
+	SET_BANK( 0, 0xc0000000, 32*1024*1024 );
+#else
 	SET_BANK( 0, 0xc0000000, 64*1024*1024 );
+#endif
 	mi->nr_banks = 1;
 
 	setup_ramdisk( 1, 0, 0, 8192 );

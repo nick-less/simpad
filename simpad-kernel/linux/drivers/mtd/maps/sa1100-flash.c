@@ -767,7 +767,12 @@ static struct mtd_partition sherman_partitions[] = {
 #endif
 
 #ifdef CONFIG_SA1100_SIMPAD
+
+#ifdef CONFIG_SA1100_SIMPAD_SINUSPAD
+#define SIMPAD_FLASH_SIZE               0x01000000
+#else
 #define SIMPAD_FLASH_SIZE               0x02000000
+#endif
 
 static struct mtd_partition simpad_partitions[] = {
         {
