@@ -89,7 +89,7 @@ static ssize_t switches_read(struct file *file, char *buffer,
 
 	spin_unlock_irqrestore(&switches_lock, flags);
 
-	return 0;
+	return sizeof(struct switches_mask_t);
 
 }
 
